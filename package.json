@@ -22,5 +22,8 @@
         "eslint-plugin-import": "^2.27.5",
         "nodemon": "^2.0.19",
         "prisma": "^5.15.0"
+    },
+    "prisma": {
+        "schema": "./prisma/schema.prisma"
     }
 }
