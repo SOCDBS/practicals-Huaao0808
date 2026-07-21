@@ -25,62 +25,62 @@ model course {
 }
 
 model department {
-  deptCode                       String    @id @map("dept_code") @db.VarChar(5)
-  deptName                       String    @map("dept_name") @db.VarChar(100)
-  hod                            String    @db.Char(4)
-  noOfStaff                      Int?      @map("no_of_staff")
-  maxStaffStrength               Int?      @map("max_staff_strength")
-  budget                         Decimal?  @db.Decimal(9, 2)
-  expenditure                    Decimal?  @db.Decimal(9, 2)
-  hodApptDate                    DateTime? @map("hod_appt_date") @db.Date
-  course                         course[]
-  staffDepartmentHodTostaff      staff     @relation("department_hodTostaff", fields: [hod], references: [staffNo], onDelete: NoAction, onUpdate: NoAction, map: "dept_hod_fk")
-  staffStaffDeptCodeTodepartment staff[]   @relation("staff_dept_codeTodepartment")
+  deptCode                  String    @id @map("dept_code") @db.VarChar(5)
+  deptName                  String    @map("dept_name") @db.VarChar(100)
+  hod                       String    @db.Char(4)
+  noOfStaff                 Int?      @map("no_of_staff")
+  maxStaffStrength          Int?      @map("max_staff_strength")
+  budget                    Decimal?  @db.Decimal(9, 2)
+  expenditure               Decimal?  @db.Decimal(9, 2)
+  hodApptDate               DateTime? @map("hod_appt_date") @db.Date
+  course                    course[]
+  departmentHodToStaff      staff     @relation("departmentHodToStaff", fields: [hod], references: [staffNo], onDelete: NoAction, onUpdate: NoAction, map: "dept_hod_fk")
+  staffDeptCodeToDepartment staff[]   @relation("staffDeptCodeToDepartment")
 }
 
 model module {
-  modCode                                   String               @id @map("mod_code") @db.VarChar(10)
-  modName                                   String               @map("mod_name") @db.VarChar(100)
-  creditUnit                                Int                  @map("credit_unit")
-  modCoord                                  String?              @map("mod_coord") @db.Char(4)
-  staff                                     staff?               @relation(fields: [modCoord], references: [staffNo], onDelete: NoAction, onUpdate: NoAction, map: "mod_mod_coord_fk")
-  preRequisitePreRequisiteModCodeTomodule   preRequisite[]       @relation("pre_requisite_mod_codeTomodule")
-  preRequisitePreRequisiteRequisiteTomodule preRequisite[]       @relation("pre_requisite_requisiteTomodule")
-  studModPerformance                        studModPerformance[]
+  modCode                       String               @id @map("mod_code") @db.VarChar(10)
+  modName                       String               @map("mod_name") @db.VarChar(100)
+  creditUnit                    Int                  @map("credit_unit")
+  modCoord                      String?              @map("mod_coord") @db.Char(4)
+  staff                         staff?               @relation(fields: [modCoord], references: [staffNo], onDelete: NoAction, onUpdate: NoAction, map: "mod_mod_coord_fk")
+  preRequisiteModCodeToModule   preRequisite[]       @relation("preRequisiteModCodeToModule")
+  preRequisiteRequisiteToModule preRequisite[]       @relation("preRequisiteRequisiteToModule")
+  studModPerformance            studModPerformance[]
 }
 
 model preRequisite {
-  modCode                             String @map("mod_code") @db.VarChar(10)
-  requisite                           String @db.VarChar(10)
-  modulePreRequisiteModCodeTomodule   module @relation("pre_requisite_mod_codeTomodule", fields: [modCode], references: [modCode], onDelete: NoAction, onUpdate: NoAction, map: "pre_requisite_mod_code_fk")
-  modulePreRequisiteRequisiteTomodule module @relation("pre_requisite_requisiteTomodule", fields: [requisite], references: [modCode], onDelete: NoAction, onUpdate: NoAction, map: "pre_requisite_requisite_fk")
+  modCode                       String @map("mod_code") @db.VarChar(10)
+  requisite                     String @db.VarChar(10)
+  preRequisiteModCodeToModule   module @relation("preRequisiteModCodeToModule", fields: [modCode], references: [modCode], onDelete: NoAction, onUpdate: NoAction, map: "pre_requisite_mod_code_fk")
+  preRequisiteRequisiteToModule module @relation("preRequisiteRequisiteToModule", fields: [requisite], references: [modCode], onDelete: NoAction, onUpdate: NoAction, map: "pre_requisite_requisite_fk")
 
   @@id([modCode, requisite])
   @@map("pre_requisite")
 }
 
 model staff {
-  staffNo                             String           @id @map("staff_no") @db.Char(4)
-  staffName                           String           @map("staff_name") @db.VarChar(100)
-  supervisorStaffNo                   String?          @map("supervisor_staff_no") @db.Char(4)
-  dob                                 DateTime         @db.Date
-  grade                               String           @db.VarChar(5)
-  maritalStatus                       String           @map("marital_status") @db.VarChar(1)
-  pay                                 Decimal?         @db.Decimal(7, 2)
-  allowance                           Decimal?         @db.Decimal(7, 2)
-  hourlyRate                          Decimal?         @map("hourly_rate") @db.Decimal(7, 2)
-  gender                              String           @db.Char(1)
-  citizenship                         String           @db.VarChar(10)
-  joinYr                              Int              @map("join_yr")
-  deptCode                            String           @map("dept_code") @db.VarChar(5)
-  typeOfEmployment                    String           @map("type_of_employment") @db.VarChar(2)
-  highestQln                          String           @map("highest_qln") @db.VarChar(10)
-  designation                         String           @db.VarChar(20)
-  departmentDepartmentHodTostaff      department[]     @relation("department_hodTostaff")
-  module                              module[]
-  departmentStaffDeptCodeTodepartment department       @relation("staff_dept_codeTodepartment", fields: [deptCode], references: [deptCode], onDelete: NoAction, onUpdate: NoAction, map: "staff_dept_code_fk")
-  staffDependent                      staffDependent[]
-  userAccount                         userAccount[]
+  staffNo                   String           @id @map("staff_no") @db.Char(4)
+  staffName                 String           @map("staff_name") @db.VarChar(100)
+  supervisorStaffNo         String?          @map("supervisor_staff_no") @db.Char(4)
+  dob                       DateTime         @db.Date
+  grade                     String           @db.VarChar(5)
+  maritalStatus             String           @map("marital_status") @db.VarChar(1)
+  pay                       Decimal?         @db.Decimal(7, 2)
+  allowance                 Decimal?         @db.Decimal(7, 2)
+  hourlyRate                Decimal?         @map("hourly_rate") @db.Decimal(7, 2)
+  gender                    String           @db.Char(1)
+  citizenship               String           @db.VarChar(10)
+  joinYr                    Int              @map("join_yr")
+  deptCode                  String           @map("dept_code") @db.VarChar(5)
+  typeOfEmployment          String           @map("type_of_employment") @db.VarChar(2)
+  highestQln                String           @map("highest_qln") @db.VarChar(10)
+  designation               String           @db.VarChar(20)
+  departmentHodToStaff      department[]     @relation("departmentHodToStaff")
+  module                    module[]
+  staffDeptCodeToDepartment department       @relation("staffDeptCodeToDepartment", fields: [deptCode], references: [deptCode], onDelete: NoAction, onUpdate: NoAction, map: "staff_dept_code_fk")
+  staffDependent            staffDependent[]
+  userAccount               userAccount[]
 }
 
 model staffBackup {
